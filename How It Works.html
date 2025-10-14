@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - Media Sathi AI Agent | Step-by-Step Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Grotesk:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --dark: #0a0e27;
+            --light: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15), transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15), transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.15), transparent 50%),
+                        linear-gradient(180deg, #0a0e27 0%, #1a1f3a 100%);
+        }
+
+        /* Animated Grid */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(99, 102, 241, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(10, 14, 39, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            padding: 0.8rem 5%;
+            background: rgba(10, 14, 39, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.6);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            padding: 8px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 12px 30px !important;
+            border-radius: 50px;
+            color: white !important;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.6);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 180px 5% 100px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            filter: blur(150px);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .breadcrumb {
+            display: inline-flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumb span {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 40%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(99, 102, 241, 0.3)); }
+            50% { filter: brightness(1.3) drop-shadow(0 0 50px rgba(236, 72, 153, 0.6)); }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Process Steps Section */
+        .process-steps {
+            padding: 120px 5%;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .steps-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Animated Connection Line */
+        .connection-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            opacity: 0.3;
+        }
+
+        .step-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            margin-bottom: 8rem;
+            align-items: center;
+            position: relative;
+        }
+
+        .step-item:nth-child(even) {
+            direction: rtl;
+        }
+
+        .step-item:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.6);
+            z-index: 10;
+            animation: numberPulse 3s ease-in-out infinite;
+            border: 5px solid var(--dark);
+        }
+
+        @keyframes numberPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .step-content {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            padding: 4rem;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s, transform 0.6s;
+        }
+
+        .step-content:hover::before {
+            opacity: 1;
+            transform: rotate(45deg);
+        }
+
+        .step-content:hover {
+            transform: translateY(-15px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 40px 100px rgba(99, 102, 241, 0.5);
+        }
+
+        .step-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-content h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 900;
+        }
+
+        .step-content p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.9;
+            font-size: 1.15rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-features {
+            list-style: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-features li {
+            padding: 0.8rem 0;
+            color: rgba(255, 255, 255, 0.75);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+        }
+
+        .step-features li::before {
+            content: '→';
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .step-visual {
+            position: relative;
+        }
+
+        .visual-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            transition: all 0.5s;
+        }
+
+        .visual-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 40px 100px rgba(99, 102, 241, 0.4);
+        }
+
+        .visual-icon {
+            font-size: 8rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .visual-label {
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        /* Tech Stack Section */
+        .tech-stack {
+            padding: 120px 5%;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .tech-stack::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+        }
+
+        .tech-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            padding: 3rem 2.5rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 35px 90px rgba(99, 102, 241, 0.4);
+        }
+
+        .tech-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+            animation: techSpin 10s linear infinite;
+        }
+
+        @keyframes techSpin {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .tech-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .tech-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Integration Section */
+        .integration {
+            padding: 120px 5%;
+        }
+
+        .integration-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .integration-visual {
+            position: relative;
+        }
+
+        .integration-hub {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            margin: 0 auto;
+            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.6);
+            animation: hubPulse 3s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes hubPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 30px 80px rgba(99, 102, 241, 0.6); }
+            50% { transform: scale(1.1); box-shadow: 0 40px 100px rgba(236, 72, 153, 0.8); }
+        }
+
+        .integration-nodes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: nodeFloat 4s ease-in-out infinite;
+        }
+
+        .node:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
+        .node:nth-child(2) { top: 20%; right: 0; animation-delay: 0.5s; }
+        .node:nth-child(3) { bottom: 20%; right: 0; animation-delay: 1s; }
+        .node:nth-child(4) { bottom: 0; left: 50%; transform: translateX(-50%); animation-delay: 1.5s; }
+        .node:nth-child(5) { bottom: 20%; left: 0; animation-delay: 2s; }
+        .node:nth-child(6) { top: 20%; left: 0; animation-delay: 2.5s; }
+
+        @keyframes nodeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .integration-content h3 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 900;
+        }
+
+        .integration-content p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.9;
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .integration-list {
+            list-style: none;
+        }
+
+        .integration-list li {
+            padding: 1rem 0;
+            color: rgba(255, 255, 255, 0.75);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.05rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .integration-list li::before {
+            content: '🔗';
+            font-size: 1.5rem;
+        }
+
+        /* Video Demo Section */
+        .video-demo {
+            padding: 120px 5%;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .video-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 35px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+        }
+
+        .play-button {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.6);
+            animation: playPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes playPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .play-button:hover {
+            transform: scale(1.2);
+            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.8);
+        }
+
+        .video-title {
+            margin-top: 2rem;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 5%;
+            text-align: center;
+        }
+
+        .cta-box {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.15));
+            backdrop-filter: blur(20px);
+            padding: 6rem 5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+            animation: rotateBg 20s linear infinite;
+        }
+
+        @keyframes rotateBg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-box h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box p {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            border: 2px solid transparent;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.7);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6rem 5% 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(8px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 4.5rem;
+            }
+
+            .step-item {
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .step-item {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .step-item:nth-child(even) {
+                direction: ltr;
+            }
+
+            .step-number {
+                position: relative;
+                left: auto;
+                top: auto;
+                transform: none;
+                margin: 0 auto 2rem;
+            }
+
+            .connection-line {
+                display: none;
+            }
+
+            .integration-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-header h2 {
+                font-size: 3rem;
+            }
+
+            .step-content {
+                padding: 3rem 2rem;
+            }
+
+            .step-content h3 {
+                font-size: 2rem;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .cta-box {
+                padding: 4rem 2.5rem;
+            }
+
+            .cta-box h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .step-number {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .step-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2.3rem;
+            }
+
+            .integration-hub {
+                width: 150px;
+                height: 150px;
+                font-size: 4rem;
+            }
+
+            .node {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    <div class="grid-bg"></div>
+    <div class="particles" id="particles"></div>
+
+<!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <div class="logo-icon">🤖</div>
+                <span>Media Sathi AI</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+    <li><a href="Features.html">Features</a></li>
+    <li><a href="How It Works.html">How It Works</a></li>
+    <li><a href="Results.html">Results</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#integrations">Integrations</a></li>
+    <li><a href="aboutus.html">About</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact">Contact</a></li>
+                <li><a href="#demo" class="nav-cta">Get Started</a></li>
+            </ul>
+            <div class="mobile-toggle">☰</div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> <span>/</span> <span>How It Works</span>
+            </div>
+            <h1>How It Works</h1>
+            <p>Discover how Media Sathi AI transforms your business communication in just 4 simple steps. From setup to success, we've made it incredibly easy to get started.</p>
+        </div>
+    </section>
+
+    <!-- Process Steps Section -->
+    <section id="process" class="process-steps">
+        <div class="section-header">
+            <h2>Simple 4-Step Process</h2>
+            <p>Get started with our AI agents in minutes, not months</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="connection-line"></div>
+
+            <!-- Step 1 -->
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-icon">📝</div>
+                    <h3>Sign Up & Configure</h3>
+                    <p>Create your account in under 2 minutes and customize your AI agent with our intuitive dashboard. Choose your agent type, set your preferences, and define your business goals.</p>
+                    <ul class="step-features">
+                        <li>Quick account setup with email or Google</li>
+                        <li>Choose from 12+ specialized AI agents</li>
+                        <li>Customize voice, language, and personality</li>
+                        <li>Define your business rules and workflows</li>
+                        <li>Set up greeting messages and responses</li>
+                        <li>Configure working hours and availability</li>
+                    </ul>
+                </div>
+                <div class="step-visual">
+                    <div class="visual-box">
+                        <div class="visual-icon">💻</div>
+                        <div class="visual-label">Easy Configuration Dashboard</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-icon">🔗</div>
+                    <h3>Connect Your Systems</h3>
+                    <p>Seamlessly integrate with your existing tools and platforms. Our AI agents work with your CRM, calendar, phone system, and other business applications.</p>
+                    <ul class="step-features">
+                        <li>One-click CRM integration (Salesforce, HubSpot, Zoho)</li>
+                        <li>Calendar sync (Google, Outlook, Apple)</li>
+                        <li>Phone system connection (Twilio, RingCentral)</li>
+                        <li>Email platform integration</li>
+                        <li>Payment gateway setup</li>
+                        <li>Custom API connections available</li>
+                    </ul>
+                </div>
+                <div class="step-visual">
+                    <div class="visual-box">
+                        <div class="visual-icon">🔄</div>
+                        <div class="visual-label">Seamless Integration</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-icon">🎓</div>
+                    <h3>Train & Test</h3>
+                    <p>Our AI learns your business context, products, services, and FAQs. Test with sample conversations to ensure perfect alignment with your brand voice and requirements.</p>
+                    <ul class="step-features">
+                        <li>Upload your knowledge base and FAQs</li>
+                        <li>Train with your product/service information</li>
+                        <li>Test with sample conversations</li>
+                        <li>Review AI responses and fine-tune</li>
+                        <li>Set up escalation protocols</li>
+                        <li>Preview before going live</li>
+                    </ul>
+                </div>
+                <div class="step-visual">
+                    <div class="visual-box">
+                        <div class="visual-icon">🧠</div>
+                        <div class="visual-label">Smart AI Training</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <div class="step-icon">🚀</div>
+                    <h3>Launch & Optimize</h3>
+                    <p>Go live with your AI agent and watch it handle calls, qualify leads, and engage customers 24/7. Monitor performance in real-time and continuously improve with AI insights.</p>
+                    <ul class="step-features">
+                        <li>Launch your AI agent with one click</li>
+                        <li>Monitor real-time performance dashboard</li>
+                        <li>Track calls, conversions, and metrics</li>
+                        <li>Receive AI-powered optimization suggestions</li>
+                        <li>Continuous learning and improvement</li>
+                        <li>24/7 support from our team</li>
+                    </ul>
+                </div>
+                <div class="step-visual">
+                    <div class="visual-box">
+                        <div class="visual-icon">📊</div>
+                        <div class="visual-label">Live Analytics Dashboard</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack">
+        <div class="section-header">
+            <h2>Powered By Advanced Technology</h2>
+            <p>Enterprise-grade AI infrastructure for reliable performance</p>
+        </div>
+        
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">🧠</div>
+                <h3>Advanced NLP</h3>
+                <p>Natural Language Processing powered by GPT-4 and custom models for human-like conversations.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">🎙️</div>
+                <h3>Voice Synthesis</h3>
+                <p>Ultra-realistic voice generation with emotion detection and natural intonation.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">☁️</div>
+                <h3>Cloud Infrastructure</h3>
+                <p>Scalable AWS infrastructure with 99.9% uptime guarantee and global CDN.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">🔒</div>
+                <h3>Bank-Level Security</h3>
+                <p>End-to-end encryption, SOC 2 compliance, and GDPR ready data protection.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">⚡</div>
+                <h3>Real-Time Processing</h3>
+                <p>Sub-second response times with edge computing for instant AI interactions.</p>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-icon">📈</div>
+                <h3>ML Analytics</h3>
+                <p>Machine learning algorithms for predictive insights and continuous optimization.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section class="integration">
+        <div class="section-header">
+            <h2>Integrate With Your Favorite Tools</h2>
+            <p>Works seamlessly with the tools you already use</p>
+        </div>
+        
+        <div class="integration-grid">
+            <div class="integration-visual">
+                <div class="integration-hub">🤖</div>
+                <div class="integration-nodes">
+                    <div class="node">📧</div>
+                    <div class="node">📞</div>
+                    <div class="node">💼</div>
+                    <div class="node">📅</div>
+                    <div class="node">💳</div>
+                    <div class="node">📊</div>
+                </div>
+            </div>
+            
+            <div class="integration-content">
+                <h3>All Your Tools, One Platform</h3>
+                <p>Media Sathi AI integrates effortlessly with your existing business ecosystem. Connect once, automate forever.</p>
+                
+                <ul class="integration-list">
+                    <li>CRM Systems (Salesforce, HubSpot, Zoho, Pipedrive)</li>
+                    <li>Calendar Apps (Google Calendar, Outlook, Apple Calendar)</li>
+                    <li>Phone Systems (Twilio, RingCentral, Vonage)</li>
+                    <li>Email Platforms (Gmail, Outlook, SendGrid)</li>
+                    <li>Payment Gateways (Stripe, PayPal, Razorpay)</li>
+                    <li>Analytics Tools (Google Analytics, Mixpanel)</li>
+                    <li>Helpdesk Software (Zendesk, Freshdesk, Intercom)</li>
+                    <li>Marketing Automation (Mailchimp, ActiveCampaign)</li>
+                    <li>Custom API Integrations Available</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Demo Section -->
+    <section class="video-demo">
+        <div class="section-header">
+            <h2>See It In Action</h2>
+            <p>Watch how Media Sathi AI transforms business communication</p>
+        </div>
+        
+        <div class="video-container">
+            <div class="video-wrapper">
+                <div class="video-placeholder">
+                    <div class="play-button">▶️</div>
+                    <div class="video-title">Watch Demo Video</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of businesses already using Media Sathi AI. Start your free trial today!</p>
+            <div class="btn-group">
+                <a href="index.html#demo" class="btn btn-primary">Start Free Trial</a>
+                <a href="index.html#contact" class="btn btn-secondary">Schedule Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Media Sathi AI</h3>
+                <p>Revolutionizing business communication with cutting-edge AI voice technology.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook">📘</a>
+                    <a href="#" title="Twitter">🐦</a>
+                    <a href="#" title="LinkedIn">💼</a>
+                    <a href="#" title="Instagram">📷</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="aboutus.html">About Us</a>
+                <a href="features.html">Features</a>
+                <a href="index.html#pricing">Pricing</a>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <a href="#">Documentation</a>
+                <a href="#">API Reference</a>
+                <a href="#">Support Center</a>
+                <a href="#">Blog</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>📧 info@mediasathi.ai</p>
+                <p>📞 +91 1234567890</p>
+                <p>📍 Kanpur, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Media Sathi AI Agent. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.step-content, .step-visual, .tech-card, .integration-visual, .integration-content').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease-out';
+            observer.observe(el);
+        });
+
+        // Step numbers animation
+        document.querySelectorAll('.step-number').forEach((num, index) => {
+            num.style.opacity = '0';
+            num.style.transform = 'translate(-50%, -50%) scale(0)';
+            num.style.transition = 'all 0.6s ease-out';
+            
+            setTimeout(() => {
+                observer.observe(num);
+                num.style.opacity = '1';
+                num.style.transform = 'translate(-50%, -50%) scale(1)';
+            }, index * 200);
+        });
+
+        // Video play button interaction
+        const playButton = document.querySelector('.play-button');
+        if (playButton) {
+            playButton.addEventListener('click', () => {
+                alert('Video demo would play here. This is a placeholder for your actual demo video.');
+            });
+        }
+
+        // Integration nodes random movement
+        const nodes = document.querySelectorAll('.node');
+        nodes.forEach((node, index) => {
+            setInterval(() => {
+                const randomX = (Math.random() - 0.5) * 20;
+                const randomY = (Math.random() - 0.5) * 20;
+                node.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            }, 2000 + index * 500);
+        });
+    </script>
+</body>
+</html>

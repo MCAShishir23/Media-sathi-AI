@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrations - Media Sathi AI Agent | Connect Everything</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Grotesk:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --dark: #0f172a;
+            --light: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b, #312e81, #1e1b4b, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientFlow 20s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 25s infinite;
+        }
+
+        .orb1 {
+            width: min(600px, 80vw);
+            height: min(600px, 80vw);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            top: -300px;
+            left: -300px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: min(500px, 70vw);
+            height: min(500px, 70vw);
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            bottom: -250px;
+            right: -250px;
+            animation-delay: 8s;
+        }
+
+        .orb3 {
+            width: min(400px, 60vw);
+            height: min(400px, 60vw);
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            top: 50%;
+            left: 50%;
+            animation-delay: 16s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(150px, -150px) scale(1.2); }
+            66% { transform: translate(-150px, 150px) scale(0.8); }
+        }
+
+        nav {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: clamp(0.8rem, 3vw, 1.5rem) 5%;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        nav.scrolled {
+            padding: clamp(0.5rem, 2vw, 1rem) 5%;
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 2vw, 12px);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-icon {
+            width: clamp(35px, 6vw, 45px);
+            height: clamp(35px, 6vw, 45px);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+            animation: logoGlow 3s infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(236, 72, 153, 0.8); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: clamp(1rem, 3vw, 2.5rem);
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            padding: clamp(8px, 1.5vw, 12px) clamp(15px, 3vw, 30px);
+            border-radius: 50px;
+            color: white !important;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            cursor: pointer;
+            color: white;
+            z-index: 1001;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: min(300px, 80vw);
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 6rem 2rem 2rem;
+            transition: right 0.4s;
+            z-index: 999;
+            box-shadow: -10px 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+        }
+
+        .mobile-menu ul li {
+            margin: 1.5rem 0;
+        }
+
+        .mobile-menu ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: block;
+            padding: 0.5rem 0;
+        }
+
+        .mobile-menu ul li a:hover {
+            color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(100px, 15vh, 150px) 5% clamp(50px, 10vh, 80px);
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleShine 3s infinite;
+        }
+
+        @keyframes titleShine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.4); }
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto clamp(2rem, 5vw, 3rem);
+            line-height: 1.8;
+        }
+
+        .integration-badges {
+            display: flex;
+            justify-content: center;
+            gap: clamp(0.8rem, 2vw, 1.5rem);
+            flex-wrap: wrap;
+            margin-top: clamp(2rem, 5vw, 3rem);
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: clamp(0.7rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            transition: all 0.3s;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .categories {
+            padding: clamp(50px, 10vh, 100px) 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: clamp(40px, 8vh, 80px);
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: clamp(0.8rem, 2vw, 1.5rem);
+            flex-wrap: wrap;
+            margin-bottom: clamp(2rem, 5vw, 4rem);
+        }
+
+        .tab {
+            padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 35px);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            font-size: clamp(0.85rem, 1.8vw, 1rem);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .integrations-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+
+        .integration-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .integration-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .integration-card:hover::before {
+            opacity: 1;
+        }
+
+        .integration-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 30px 80px rgba(99, 102, 241, 0.4);
+        }
+
+        .integration-icon {
+            width: clamp(70px, 15vw, 100px);
+            height: clamp(70px, 15vw, 100px);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin: 0 auto clamp(1rem, 2vw, 1.5rem);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+            transition: all 0.5s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .integration-card:hover .integration-icon {
+            transform: rotateY(360deg) scale(1.1);
+        }
+
+        .integration-card h3 {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            font-weight: 700;
+            margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
+            position: relative;
+            z-index: 1;
+        }
+
+        .integration-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+            position: relative;
+            z-index: 1;
+        }
+
+        .integration-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: clamp(6px, 1.5vw, 8px) clamp(15px, 3vw, 20px);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50px;
+            font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+            font-weight: 600;
+            color: var(--success);
+            position: relative;
+            z-index: 1;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .featured-integration {
+            padding: clamp(50px, 10vh, 100px) 5%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .featured-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+            gap: clamp(2rem, 5vw, 5rem);
+            align-items: center;
+        }
+
+        .featured-text h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            background: linear-gradient(135deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .featured-text p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: clamp(1.5rem, 3vw, 2rem) 0;
+        }
+
+        .feature-list li {
+            padding: clamp(0.8rem, 2vw, 1rem) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: clamp(0.8rem, 2vw, 1rem);
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            width: clamp(25px, 5vw, 30px);
+            height: clamp(25px, 5vw, 30px);
+            background: linear-gradient(135deg, var(--success), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .integration-diagram {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            border-radius: 30px;
+            padding: clamp(2rem, 4vw, 3rem);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .center-node {
+            width: clamp(80px, 15vw, 120px);
+            height: clamp(80px, 15vw, 120px);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin: 0 auto clamp(2rem, 4vw, 3rem);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.5);
+            animation: centerPulse 3s infinite;
+        }
+
+        @keyframes centerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .connected-apps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
+            gap: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .mini-app {
+            background: rgba(255, 255, 255, 0.05);
+            padding: clamp(1rem, 2.5vw, 1.5rem);
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .mini-app:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .mini-app-icon {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .mini-app-name {
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .api-section {
+            padding: clamp(50px, 10vh, 100px) 5%;
+        }
+
+        .api-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: clamp(2rem, 5vw, 4rem);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+            gap: clamp(2rem, 4vw, 3rem);
+            margin-top: clamp(2rem, 4vw, 3rem);
+        }
+
+        .api-feature {
+            background: rgba(255, 255, 255, 0.03);
+            padding: clamp(1.5rem, 3vw, 2.5rem);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .api-feature:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .api-icon {
+            width: clamp(50px, 10vw, 60px);
+            height: clamp(50px, 10vw, 60px);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .api-feature h3 {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            margin-bottom: clamp(0.8rem, 1.5vw, 1rem);
+        }
+
+        .api-feature p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+        }
+
+        .code-block {
+            background: #1a1f2e;
+            padding: clamp(1.5rem, 3vw, 2rem);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: clamp(1.5rem, 3vw, 2rem);
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            color: #a8b2d1;
+            overflow-x: auto;
+        }
+
+        .code-block .keyword { color: #c792ea; }
+        .code-block .string { color: #c3e88d; }
+        .code-block .function { color: #82aaff; }
+
+        .request-integration {
+            padding: clamp(50px, 10vh, 100px) 5%;
+            text-align: center;
+        }
+
+        .request-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+            backdrop-filter: blur(30px);
+            padding: clamp(2rem, 5vw, 4rem);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .request-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .request-content p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+            line-height: 1.8;
+        }
+
+        .btn {
+            padding: clamp(12px, 2.5vw, 18px) clamp(30px, 5vw, 45px);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            text-decoration: none;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(99, 102, 241, 0.6);
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            padding: clamp(2rem, 4vw, 3rem) 5% clamp(1.5rem, 3vw, 2rem);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: clamp(0.85rem, 1.5vw, 1rem);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .connected-apps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🤖</div>
+                <span>Media Sathi AI</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Features.html">Features</a></li>
+                <li><a href="How It Works.html">How It Works</a></li>
+                <li><a href="results.html">Results</a></li>
+                <li><a href="index.html#pricing">Pricing</a></li>
+                <li><a href="integrations.html">Integrations</a></li>
+                <li><a href="aboutus.html">About</a></li>
+                <li><a href="index.html#demo" class="nav-cta">Get Started</a></li>
+            </ul>
+            <div class="mobile-toggle" id="mobileToggle">☰</div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Features.html">Features</a></li>
+            <li><a href="How It Works.html">How It Works</a></li>
+            <li><a href="results.html">Results</a></li>
+            <li><a href="index.html#pricing">Pricing</a></li>
+            <li><a href="integrations.html">Integrations</a></li>
+            <li><a href="aboutus.html">About</a></li>
+            <li><a href="index.html#demo" class="nav-cta">Get Started</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content fade-in">
+            <h1>🔗 Connect Everything</h1>
+            <p>Seamlessly integrate Media Sathi AI Agent with 100+ tools and platforms. Build powerful workflows without writing a single line of code.</p>
+            
+            <div class="integration-badges">
+                <div class="badge">🚀 100+ Integrations</div>
+                <div class="badge">⚡ Real-time Sync</div>
+                <div class="badge">🔧 No Code Required</div>
+                <div class="badge">🔐 Enterprise Security</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="section-header">
+            <h2>Popular Integrations</h2>
+            <p>Connect with the tools you already use</p>
+        </div>
+
+        <div class="category-tabs">
+            <div class="tab active" data-category="all">All</div>
+            <div class="tab" data-category="crm">CRM</div>
+            <div class="tab" data-category="communication">Communication</div>
+            <div class="tab" data-category="automation">Automation</div>
+            <div class="tab" data-category="analytics">Analytics</div>
+            <div class="tab" data-category="productivity">Productivity</div>
+        </div>
+
+        <div class="integrations-grid" id="integrationsGrid">
+            <!-- CRM Integrations -->
+            <div class="integration-card fade-in" data-category="crm">
+                <div class="integration-icon">📊</div>
+                <h3>Salesforce</h3>
+                <p>Sync leads, contacts, and call data automatically with Salesforce CRM</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="crm">
+                <div class="integration-icon">🎯</div>
+                <h3>HubSpot</h3>
+                <p>Connect your HubSpot workflows with AI calling automation</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="crm">
+                <div class="integration-icon">💼</div>
+                <h3>Pipedrive</h3>
+                <p>Manage your sales pipeline with automated AI follow-ups</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="crm">
+                <div class="integration-icon">🔷</div>
+                <h3>Zoho CRM</h3>
+                <p>Integrate seamlessly with Zoho's comprehensive CRM suite</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <!-- Communication Integrations -->
+            <div class="integration-card fade-in" data-category="communication">
+                <div class="integration-icon">💬</div>
+                <h3>Slack</h3>
+                <p>Get real-time notifications and updates in your Slack channels</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="communication">
+                <div class="integration-icon">📧</div>
+                <h3>Gmail</h3>
+                <p>Automatically send follow-up emails and track responses</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="communication">
+                <div class="integration-icon">📱</div>
+                <h3>WhatsApp</h3>
+                <p>Send automated messages and updates via WhatsApp Business</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="communication">
+                <div class="integration-icon">👥</div>
+                <h3>Microsoft Teams</h3>
+                <p>Collaborate and get updates directly in Teams channels</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <!-- Automation Integrations -->
+            <div class="integration-card fade-in" data-category="automation">
+                <div class="integration-icon">⚡</div>
+                <h3>Zapier</h3>
+                <p>Connect with 5000+ apps through Zapier automation</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="automation">
+                <div class="integration-icon">🔄</div>
+                <h3>Make (Integromat)</h3>
+                <p>Build complex workflows with visual automation builder</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="automation">
+                <div class="integration-icon">🤖</div>
+                <h3>n8n</h3>
+                <p>Self-hosted workflow automation for enterprise needs</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="automation">
+                <div class="integration-icon">🔗</div>
+                <h3>IFTTT</h3>
+                <p>Create simple yet powerful automation recipes</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <!-- Analytics Integrations -->
+            <div class="integration-card fade-in" data-category="analytics">
+                <div class="integration-icon">📈</div>
+                <h3>Google Analytics</h3>
+                <p>Track and analyze your campaign performance metrics</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="analytics">
+                <div class="integration-icon">📊</div>
+                <h3>Tableau</h3>
+                <p>Visualize your calling data with powerful dashboards</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="analytics">
+                <div class="integration-icon">💹</div>
+                <h3>Power BI</h3>
+                <p>Generate comprehensive reports and business intelligence</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="analytics">
+                <div class="integration-icon">📉</div>
+                <h3>Mixpanel</h3>
+                <p>Track user behavior and engagement analytics</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <!-- Productivity Integrations -->
+            <div class="integration-card fade-in" data-category="productivity">
+                <div class="integration-icon">📝</div>
+                <h3>Notion</h3>
+                <p>Sync notes, tasks, and databases with Notion workspaces</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="productivity">
+                <div class="integration-icon">📋</div>
+                <h3>Trello</h3>
+                <p>Manage tasks and projects with automated board updates</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="productivity">
+                <div class="integration-icon">✅</div>
+                <h3>Asana</h3>
+                <p>Keep your team aligned with automated task management</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="productivity">
+                <div class="integration-icon">📅</div>
+                <h3>Google Calendar</h3>
+                <p>Schedule calls and meetings automatically</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="productivity">
+                <div class="integration-icon">🗂️</div>
+                <h3>Airtable</h3>
+                <p>Organize and sync data in flexible spreadsheet-database hybrid</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+
+            <div class="integration-card fade-in" data-category="productivity">
+                <div class="integration-icon">📂</div>
+                <h3>Google Drive</h3>
+                <p>Store and share call recordings and transcripts automatically</p>
+                <div class="integration-status">
+                    <span class="status-dot"></span>
+                    Active
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Integration -->
+    <section class="featured-integration">
+        <div class="featured-content">
+            <div class="featured-text">
+                <h2>🚀 API-First Integration</h2>
+                <p>Our powerful REST API allows you to build custom integrations and connect Media Sathi AI Agent with any platform in your tech stack.</p>
+                
+                <ul class="feature-list">
+                    <li>Complete REST API documentation</li>
+                    <li>Webhooks for real-time events</li>
+                    <li>SDKs for popular languages</li>
+                    <li>Sandbox environment for testing</li>
+                    <li>99.9% uptime SLA</li>
+                    <li>Dedicated API support team</li>
+                </ul>
+            </div>
+            
+            <div class="featured-visual">
+                <div class="integration-diagram">
+                    <div class="center-node">🤖</div>
+                    <div class="connected-apps">
+                        <div class="mini-app">
+                            <div class="mini-app-icon">📊</div>
+                            <div class="mini-app-name">CRM</div>
+                        </div>
+                        <div class="mini-app">
+                            <div class="mini-app-icon">💬</div>
+                            <div class="mini-app-name">Chat</div>
+                        </div>
+                        <div class="mini-app">
+                            <div class="mini-app-icon">📧</div>
+                            <div class="mini-app-name">Email</div>
+                        </div>
+                        <div class="mini-app">
+                            <div class="mini-app-icon">📈</div>
+                            <div class="mini-app-name">Analytics</div>
+                        </div>
+                        <div class="mini-app">
+                            <div class="mini-app-icon">⚡</div>
+                            <div class="mini-app-name">Automation</div>
+                        </div>
+                        <div class="mini-app">
+                            <div class="mini-app-icon">📱</div>
+                            <div class="mini-app-name">Mobile</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Section -->
+    <section class="api-section">
+        <div class="api-container">
+            <div class="section-header">
+                <h2>Developer-Friendly API</h2>
+                <p>Integrate in minutes with our comprehensive API</p>
+            </div>
+
+            <div class="api-grid">
+                <div class="api-feature">
+                    <div class="api-icon">🔑</div>
+                    <h3>Easy Authentication</h3>
+                    <p>Simple API key authentication gets you started in seconds. OAuth 2.0 support for enterprise applications.</p>
+                </div>
+
+                <div class="api-feature">
+                    <div class="api-icon">📚</div>
+                    <h3>Comprehensive Docs</h3>
+                    <p>Detailed documentation with code examples in multiple languages and interactive API explorer.</p>
+                </div>
+
+                <div class="api-feature">
+                    <div class="api-icon">🔔</div>
+                    <h3>Webhooks</h3>
+                    <p>Real-time event notifications for call status, transcriptions, and custom triggers.</p>
+                </div>
+
+                <div class="api-feature">
+                    <div class="api-icon">🛡️</div>
+                    <h3>Enterprise Security</h3>
+                    <p>Bank-level encryption, SOC 2 compliance, and dedicated security team monitoring.</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'https://api.mediasathi.ai/v1/calls'</span>, {
+  <span class="keyword">method:</span> <span class="string">'POST'</span>,
+  <span class="keyword">headers:</span> {
+    <span class="string">'Authorization'</span>: <span class="string">'Bearer YOUR_API_KEY'</span>,
+    <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>
+  },
+  <span class="keyword">body:</span> <span class="function">JSON.stringify</span>({
+    <span class="keyword">phone_number:</span> <span class="string">'+1234567890'</span>,
+    <span class="keyword">campaign_id:</span> <span class="string">'campaign_123'</span>,
+    <span class="keyword">agent_voice:</span> <span class="string">'natural-female'</span>
+  })
+});
+            </div>
+        </div>
+    </section>
+
+    <!-- Request Integration CTA -->
+    <section class="request-integration">
+        <div class="request-content">
+            <h2>Don't See Your Tool?</h2>
+            <p>Request a custom integration and our team will build it for you. We're constantly adding new integrations based on user feedback.</p>
+            <button class="btn btn-primary" onclick="alert('Request form would open here!')">Request Integration</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Media Sathi AI Agent. All rights reserved. | Privacy Policy | Terms of Service</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('active');
+            this.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!mobileToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+                mobileToggle.textContent = '☰';
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                mobileToggle.textContent = '☰';
+            });
+        });
+
+        // Category tabs filtering
+        const tabs = document.querySelectorAll('.tab');
+        const cards = document.querySelectorAll('.integration-card');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+
+                const category = this.getAttribute('data-category');
+
+                // Filter cards
+                cards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeInUp 0.5s ease-out';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Fade in animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all integration cards
+        document.querySelectorAll('.integration-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Dynamic connection lines (decorative effect)
+        function createConnectionLines() {
+            const container = document.createElement('div');
+            container.className = 'connection-lines';
+            
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElement('div');
+                line.className = 'line';
+                line.style.top = Math.random() * 100 + '%';
+                line.style.width = Math.random() * 500 + 200 + 'px';
+                line.style.animationDelay = Math.random() * 4 + 's';
+                container.appendChild(line);
+            }
+            
+            document.body.appendChild(container);
+        }
+
+        // Initialize on load
+        window.addEventListener('load', function() {
+            createConnectionLines();
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effect sound (optional - commented out for now)
+        // cards.forEach(card => {
+        //     card.addEventListener('mouseenter', function() {
+        //         // You can add a subtle sound effect here
+        //     });
+        // });
+    </script>
+</body>
+</html>
